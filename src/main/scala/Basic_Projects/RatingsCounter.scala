@@ -4,7 +4,7 @@ import org.apache.spark._
 import org.apache.log4j._
 
 /** Count up how many of each star rating exists in the MovieLens 100K data set. */
-object Trial {
+object RatingsCounter {
 
   /** Our main function where the action happens */
   def main(args: Array[String]) {
