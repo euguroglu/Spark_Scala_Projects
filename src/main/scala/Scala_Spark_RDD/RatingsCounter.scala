@@ -1,4 +1,4 @@
-package Basic_Projects
+package Scala_Spark_RDD
 
 import org.apache.spark._
 import org.apache.log4j._

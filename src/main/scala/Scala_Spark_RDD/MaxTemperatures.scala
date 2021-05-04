@@ -1,12 +1,12 @@
-package Basic_Projects
+package Scala_Spark_RDD
 
 import org.apache.log4j._
 import org.apache.spark._
 
-import scala.math.min
+import scala.math.max
 
 /** Find the minimum temperature by weather station */
-object MinTemperatures {
+object MaxTemperatures {
   
   def parseLine(line:String): (String, String, Float) = {
     val fields = line.split(",")
@@ -22,7 +22,7 @@ object MinTemperatures {
     Logger.getLogger("org").setLevel(Level.ERROR)
     
     // Create a SparkContext using every core of the local machine
-    val sc = new SparkContext("local[*]", "MinTemperatures")
+    val sc = new SparkContext("local[*]", "MaxTemperatures")
     
     // Read each line of input data
     val lines = sc.textFile("data/1800.csv")
@@ -31,22 +31,22 @@ object MinTemperatures {
     val parsedLines = lines.map(parseLine)
     
     // Filter out all but TMIN entries
-    val minTemps = parsedLines.filter(x => x._2 == "TMIN")
+    val maxTemps = parsedLines.filter(x => x._2 == "TMAX")
     
     // Convert to (stationID, temperature)
-    val stationTemps = minTemps.map(x => (x._1, x._3))
+    val stationTemps = maxTemps.map(x => (x._1, x._3))
     
     // Reduce by stationID retaining the minimum temperature found
-    val minTempsByStation = stationTemps.reduceByKey( (x,y) => min(x,y))
+    val maxTempsByStation = stationTemps.reduceByKey( (x,y) => max(x,y))
     
     // Collect, format, and print the results
-    val results = minTempsByStation.collect()
+    val results = maxTempsByStation.collect()
     
     for (result <- results.sorted) {
        val station = result._1
        val temp = result._2
        val formattedTemp = f"$temp%.2f F"
-       println(s"$station minimum temperature: $formattedTemp") 
+       println(s"$station maximum temperature: $formattedTemp")
     }
       
   }
