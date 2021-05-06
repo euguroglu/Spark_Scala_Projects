@@ -1,6 +1,6 @@
 package Scala_Spark_DataFrame
 
-import Scala_Spark_DataFrame.DataFramesDataset.Person
+
 import org.apache.log4j._
 import org.apache.spark.sql._
 
